@@ -1,6 +1,67 @@
-@startuml Person 
-class Person {
+@startuml Federal Galata_Stock Control
+class User {
   name: string
   age: number
 }
+
+class Product {
+  name: string
+  category: string
+  subCategory: string
+  price: number
+  recipes: Recipe[]
+  calculateCost()
+}
+
+class Rawmaterial {
+  name: string
+  category: string
+  subCategory: string
+  price: number
+  stockControl: boolean
+  unit: string
+
+}
+
+' class Ingredient {
+'   rawmaterial: Rawmaterial
+'   quantity: number
+' }
+
+class Recipe {
+  product: Product
+  ingredients: [{rawmaterial: Rawmaterial, quantity: number}]
+  createdAt: Date
+  get cost ()
+}
+
+class Supplier {
+  name: string
+  contact: string
+}
+
+class Purchase {
+  supplier: Supplier
+  date: Date
+  purchasedItems: [{rawmaterial: Rawmaterial, quantity: number}]
+  details: string
+}
+
+class Sales {
+  period: string
+  product: Product
+  quantity: number
+  add()
+}
+
+class Inventory {
+  period: string
+  rawmaterial: Rawmaterial
+  quantity: number
+  calculateActualConsumption()
+  calculateTheoreticalConsumption()
+  add()
+}
+
+
 @enduml
