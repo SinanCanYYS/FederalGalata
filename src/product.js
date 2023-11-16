@@ -7,6 +7,12 @@ class Product {
     this.recipes = []
   }
   calculateCost() {}
+  static create({ name, category, subCategory, price }) {
+    const product = new Product(name, category, subCategory, price)
+    Product.list.push(product)
+    return product
+  }
+  static list = []
 }
 
 module.exports = Product

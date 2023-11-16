@@ -16,6 +16,12 @@ class Purchase {
     }, 0)
     return totalCost
   }
+  static create({ supplier, date, purchaseItems }) {
+    const newPurchase = new Purchase(supplier, date, purchaseItems)
+    Purchase.list.push(newPurchase)
+    return newPurchase
+  }
+  static list = []
 }
 
 module.exports = Purchase
