@@ -7,11 +7,14 @@ const Rawmaterial = require('./rawmaterial')
 const Product = require('./product')
 const Recipe = require('./recipe')
 
+// Creating Users
 const sinan = User.create({ name: 'Sinan', age: 50 })
 const numan = User.create({ name: 'Numan', age: 30 })
 
+// Creating Suppliers
 const fcc = Supplier.create({ name: 'fcc', contact: 'Levent bey', email: 'fcc@gmail.com' })
 
+// Describing Produckts and Rawmaterials
 const americano = sinan.createProduct('Americano', 'Drink', 'Coffee', 80)
 const latte = sinan.createProduct('Latte', 'Drink', 'Coffee', 90)
 const chocolateLatte = sinan.createProduct('Chocolate Latte', 'Drink', 'Coffee', 120)
@@ -20,6 +23,7 @@ const coffeeBean = sinan.createRawmaterial('Coffee Bean', 'Drink', 'Coffee', 250
 const milk = sinan.createRawmaterial('Milk', 'Drink', 'Coffee', 35, true, 'lt')
 const syrup = sinan.createRawmaterial('Syrup', 'Drink', 'Coffee', 400, true, 'lt')
 
+// Describing Recipes
 const americanoRecipe = sinan.createRecipe(americano, [{ rawMaterial: coffeeBean, quantity: 20 }])
 
 const latteRecipe = sinan.createRecipe(latte, [
@@ -47,7 +51,7 @@ const purchase4 = sinan.purchase(fcc, '01.02.2023', [
   { rawMaterial: syrup, quantity: 5, price: 400 },
 ])
 
-// Stock Data
+// Stock Data entry
 const januaryStock = sinan.addStock('01.23', [
   { rawMaterial: coffeeBean, quantity: 30 },
   { rawMaterial: milk, quantity: 15 },
@@ -60,48 +64,51 @@ const februaryStock = sinan.addStock('02.23', [
   { rawMaterial: syrup, quantity: 7 },
 ])
 
-// Sales Data
+// Sales Data entry
 const februarySales = sinan.addSales('02.23', [
   { product: americano, quantity: 1000 },
   { product: latte, quantity: 650 },
   { product: chocolateLatte, quantity: 50 },
 ])
 
-// Actual Stock Consumption Calculations
-const coffeeBeanJanuaryStock =
-  Stock.list.find(stock => stock.period === '01.23')?.stockList.find(item => item.rawMaterial.name === coffeeBean.name)
-    ?.quantity || 0
-
-const coffeeBeanFebruaryStock =
-  Stock.list.find(stock => stock.period === '02.23')?.stockList.find(item => item.rawMaterial.name === coffeeBean.name)
-    ?.quantity || 0
-
-// Specify the target date and product
+// Specify the target Period and Raw Material for stock ckeck
 const targetDate = '01.02.2023'
-const targetProduct = coffeeBean
+const targetPeriod = '02.23'
+const previousPeriod = '01.23'
+const targetRawMaterial = coffeeBean
+
+// Actual Stock Consumption Calculations
+const previousStock =
+  Stock.list
+    .find(stock => stock.period === previousPeriod)
+    ?.stockList.find(item => item.rawMaterial === targetRawMaterial)?.quantity || 0
+
+const actualStock =
+  Stock.list
+    .find(stock => stock.period === targetPeriod)
+    ?.stockList.find(item => item.rawMaterial === targetRawMaterial)?.quantity || 0
+
 // Filter purchases for the specific date
 const filteredPurchases = Purchase.list.filter(purchase => purchase.date === targetDate)
-// Sum up the values in purchaseItems for the specified product
+// Sum up the values in Filtered purchases for the specified Raw Material
 const totalPurchasedQuantity = filteredPurchases.reduce((sum, purchase) => {
-  const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial === targetProduct)
+  const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial === targetRawMaterial)
   return sum + (purchaseItem ? purchaseItem.quantity : 0)
 }, 0)
 
-console.log('January Stock : ', coffeeBeanJanuaryStock)
-console.log('February Stock : ', coffeeBeanFebruaryStock)
-console.log('Purchase Quantity : ', totalPurchasedQuantity)
+console.log('Starting Stock : ', previousStock)
+console.log('Finishing Stock : ', actualStock)
+console.log('Purchased Quantity : ', totalPurchasedQuantity)
 
-const coffeBeanFebruaryCalculatedConsumption = coffeeBeanFebruaryStock - coffeeBeanJanuaryStock + totalPurchasedQuantity
+const calculatedConsumption = previousStock + totalPurchasedQuantity - actualStock
 
-console.log('Total Qty Consumed : ', coffeBeanFebruaryCalculatedConsumption)
+console.log('Total Qty Consumed : ', calculatedConsumption)
 
-const februarySalesData = Sales.list.find(salesData => salesData.period === '02.23')
-
-// Specify the target raw material
-const targetRawMaterial = syrup
+// Finding the target period Sales Data
+const salesData = Sales.list.find(salesData => salesData.period === targetPeriod)
 
 // Sum up the total consumption of the target raw material
-const totalRecipeConsumption = februarySalesData.salesList.reduce((sum, sale) => {
+const totalRecipeConsumption = salesData.salesList.reduce((sum, sale) => {
   const recipe = sale.product.recipes.find(recipe =>
     recipe.ingredients.some(ingredient => ingredient.rawMaterial === targetRawMaterial)
   )
@@ -117,4 +124,6 @@ const totalRecipeConsumption = februarySalesData.salesList.reduce((sum, sale) =>
 }, 0)
 
 // Output the result
-console.log(`Total consumption of ${targetRawMaterial.name} in February: ${totalRecipeConsumption / 1000} kg`) // console.log(februarySalesData.salesList.reduce((sum, salesRecord) =>  sum + salesRecord.price)
+console.log(
+  `Total consumption of ${targetRawMaterial.name} in period '${targetPeriod}': ${totalRecipeConsumption / 1000} kg`
+) // console.log(februarySalesData.salesList.reduce((sum, salesRecord) =>  sum + salesRecord.price)
