@@ -14,7 +14,7 @@ const numan = User.create({ name: 'Numan', age: 30 })
 // Creating Suppliers
 const fcc = Supplier.create({ name: 'fcc', contact: 'Levent bey', email: 'fcc@gmail.com' })
 
-// Describing Produckts and Rawmaterials
+// Describing Produckts and Raw Materials
 const americano = sinan.createProduct('Americano', 'Drink', 'Coffee', 80)
 const latte = sinan.createProduct('Latte', 'Drink', 'Coffee', 90)
 const chocolateLatte = sinan.createProduct('Chocolate Latte', 'Drink', 'Coffee', 120)
@@ -38,14 +38,14 @@ const chocolateLatteRecipe = sinan.createRecipe(chocolateLatte, [
 ])
 
 // Purchases
-const purchase1 = sinan.purchase(fcc, '01.02.2023', [
+const purchase1 = sinan.purchase(fcc, '01.02.2023', '02.23', [
   { rawMaterial: coffeeBean, quantity: 15, price: 300 },
   { rawMaterial: milk, quantity: 20, price: 30 },
   { rawMaterial: syrup, quantity: 10, price: 400 },
 ])
-const purchase2 = sinan.purchase(fcc, '01.02.2023', [{ rawMaterial: coffeeBean, quantity: 5, price: 300 }])
-const purchase3 = sinan.purchase(fcc, '01.03.2023', [{ rawMaterial: coffeeBean, quantity: 15, price: 300 }])
-const purchase4 = sinan.purchase(fcc, '01.02.2023', [
+const purchase2 = sinan.purchase(fcc, '01.02.2023', '02.23', [{ rawMaterial: coffeeBean, quantity: 5, price: 300 }])
+const purchase3 = sinan.purchase(fcc, '01.03.2023', '02.23', [{ rawMaterial: coffeeBean, quantity: 15, price: 300 }])
+const purchase4 = sinan.purchase(fcc, '01.02.2023', '02.23', [
   { rawMaterial: coffeeBean, quantity: 8, price: 300 },
   { rawMaterial: milk, quantity: 60, price: 30 },
   { rawMaterial: syrup, quantity: 5, price: 400 },
@@ -72,7 +72,6 @@ const februarySales = sinan.addSales('02.23', [
 ])
 
 // Specify the target Period and Raw Material for stock ckeck
-const targetDate = '01.02.2023'
 const targetPeriod = '02.23'
 const previousPeriod = '01.23'
 const targetRawMaterial = coffeeBean
@@ -89,7 +88,7 @@ const actualStock =
     ?.stockList.find(item => item.rawMaterial === targetRawMaterial)?.quantity || 0
 
 // Filter purchases for the specific date
-const filteredPurchases = Purchase.list.filter(purchase => purchase.date === targetDate)
+const filteredPurchases = Purchase.list.filter(purchase => purchase.period === targetPeriod)
 // Sum up the values in Filtered purchases for the specified Raw Material
 const totalPurchasedQuantity = filteredPurchases.reduce((sum, purchase) => {
   const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial === targetRawMaterial)

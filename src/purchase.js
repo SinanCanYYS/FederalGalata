@@ -1,7 +1,8 @@
 class Purchase {
-  constructor(supplier, date, purchaseItems) {
+  constructor(supplier, date, period, purchaseItems) {
     this.supplier = supplier
     this.date = date
+    this.period = period
     this.purchaseItems = purchaseItems
     // this.totalCost = this.purchaseItems.reduce((sum, item) => {
     //   sum += item.quantity * item.price
@@ -16,8 +17,8 @@ class Purchase {
     }, 0)
     return totalCost
   }
-  static create({ supplier, date, purchaseItems }) {
-    const newPurchase = new Purchase(supplier, date, purchaseItems)
+  static create({ supplier, date, period, purchaseItems }) {
+    const newPurchase = new Purchase(supplier, date, period, purchaseItems)
     Purchase.list.push(newPurchase)
     return newPurchase
   }

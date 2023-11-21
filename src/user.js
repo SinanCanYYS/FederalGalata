@@ -30,8 +30,8 @@ class User {
     return rawmaterial
   }
 
-  purchase(supplier, date, purchaseItems) {
-    const purchase = Purchase.create({ supplier, date, purchaseItems })
+  purchase(supplier, date, period, purchaseItems) {
+    const purchase = Purchase.create({ supplier, date, period, purchaseItems })
     return purchase
   }
 
