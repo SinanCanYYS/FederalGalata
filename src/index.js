@@ -74,7 +74,7 @@ const februarySales = sinan.addSales('02.23', [
 // Specify the target Period and Raw Material for stock ckeck
 const targetPeriod = '02.23'
 const previousPeriod = '01.23'
-const targetRawMaterial = coffeeBean
+const targetRawMaterial = milk
 
 // Actual Stock Consumption Calculations
 const previousStock =
@@ -95,9 +95,11 @@ const totalPurchasedQuantity = filteredPurchases.reduce((sum, purchase) => {
   return sum + (purchaseItem ? purchaseItem.quantity : 0)
 }, 0)
 
+console.log(`Stock analysis for ${targetRawMaterial.name} in period ${targetPeriod}`)
 console.log('Starting Stock : ', previousStock)
 console.log('Finishing Stock : ', actualStock)
 console.log('Purchased Quantity : ', totalPurchasedQuantity)
+console.log('---------------------------------------------')
 
 const calculatedConsumption = previousStock + totalPurchasedQuantity - actualStock
 
@@ -123,6 +125,13 @@ const totalRecipeConsumption = salesData.salesList.reduce((sum, sale) => {
 }, 0)
 
 // Output the result
-console.log(
-  `Total consumption of ${targetRawMaterial.name} in period '${targetPeriod}': ${totalRecipeConsumption / 1000} kg`
-) // console.log(februarySalesData.salesList.reduce((sum, salesRecord) =>  sum + salesRecord.price)
+console.log(`Calculated Recipe consumption': ${totalRecipeConsumption / 1000} kg`) // console.log(februarySalesData.salesList.reduce((sum, salesRecord) =>  sum + salesRecord.price)
+console.log('---------------------------------------------')
+
+const stockDiff = totalRecipeConsumption / 1000 - calculatedConsumption
+
+if (stockDiff > 0) {
+  console.log(`Consumption is ${stockDiff.toFixed(2)} kg plus`)
+} else {
+  console.log(`Consumption is ${-1 * stockDiff.toFixed(2)} kg minus`)
+}
