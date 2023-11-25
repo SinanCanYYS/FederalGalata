@@ -11,22 +11,18 @@ class User {
     this.name = name
     this.age = age
   }
-  createRecipe(product, ingredients) {
+  createRecipe({ product, ingredients }) {
     const recipe = Recipe.create({ product, ingredients })
-    // const recipe = {
-    //   product,
-    //   ingredients,
-    // }
     product.recipes.push(recipe)
     return recipe
   }
 
-  createProduct(name, category, subCategory, price) {
+  createProduct({ name, category, subCategory, price }) {
     const product = Product.create({ name, category, subCategory, price })
     return product
   }
 
-  createRawmaterial(name, category, subCategory, price, stockControl, unit) {
+  createRawmaterial({ name, category, subCategory, price, stockControl, unit }) {
     const rawmaterial = Rawmaterial.create({ name, category, subCategory, price, stockControl, unit })
     return rawmaterial
   }
