@@ -34,7 +34,6 @@ async function main() {
   // await axios.get('/users').then(response => {
   //   console.log(response.data)
   // })
-
   const allUserList = await axios.get('/users')
 
   // Creating Suppliers with axios
@@ -103,21 +102,28 @@ async function main() {
   // const syrup = sinan.createRawmaterial('Syrup', 'Drink', 'Coffee', 400, true, 'lt')
 
   // defining recipes with axios
+  console.log('coffeeBean.name : ', coffeeBean.data.name)
   const americanoRecipe = await axios.post('/products/Americano/recipes', {
     user: sinan,
-    ingredients: [{ rawMaterial: 'Coffee Bean', quantity: 20 }],
+    ingredients: [{ rawMaterial: coffeeBean.data.name, quantity: 20 }],
   })
 
   const latteRecipe = await axios.post('/products/Latte/recipes', {
     user: sinan,
     ingredients: [
-      { rawMaterial: 'coffeeBean', quantity: 11 },
-      { rawMaterial: 'milk', quantity: 200 },
+      { rawMaterial: coffeeBean.data.name, quantity: 11 },
+      { rawMaterial: milk.data.name, quantity: 200 },
     ],
   })
 
-  // console.log(americanoRecipe.data)
-
+  const chocolateLatteRecipe = await axios.post('/products/Chocolate Latte/recipes', {
+    user: sinan,
+    ingredients: [
+      { rawMaterial: coffeeBean.data.name, quantity: 5 },
+      { rawMaterial: milk.data.name, quantity: 100 },
+      { rawMaterial: syrup.data.name, quantity: 5 },
+    ],
+  })
   //   // Describing Recipes
   //   const americanoRecipe = sinan.createRecipe(americano, [{ rawMaterial: coffeeBean, quantity: 20 }])
 

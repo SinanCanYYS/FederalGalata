@@ -12,7 +12,7 @@ class User {
     this.age = age
   }
   createRecipe({ product, ingredients }) {
-    const recipe = Recipe.create({ product, ingredients })
+    const recipe = Recipe.create({ productName: product.name, ingredients })
     product.recipes.push(recipe)
     return recipe
   }
