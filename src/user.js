@@ -28,7 +28,7 @@ class User {
   }
 
   purchase(supplier, date, period, purchaseItems) {
-    const purchase = Purchase.create({ supplier, date, period, purchaseItems })
+    const purchase = Purchase.create(supplier, date, period, purchaseItems)
     return purchase
   }
 

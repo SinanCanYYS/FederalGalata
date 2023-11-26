@@ -17,7 +17,7 @@ class Purchase {
     }, 0)
     return totalCost
   }
-  static create({ supplier, date, period, purchaseItems }) {
+  static create(supplier, date, period, purchaseItems) {
     const newPurchase = new Purchase(supplier, date, period, purchaseItems)
     Purchase.list.push(newPurchase)
     return newPurchase

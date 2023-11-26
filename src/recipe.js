@@ -14,7 +14,6 @@ class Recipe {
 
   static create({ productName, ingredients }) {
     const newRecipe = new Recipe(productName, ingredients)
-    console.log('xxxx2 :', ingredients)
     Recipe.list.push(newRecipe)
     return newRecipe
   }
