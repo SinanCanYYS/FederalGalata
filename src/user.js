@@ -12,7 +12,7 @@ class User {
     this.age = age
   }
   createRecipe({ product, ingredients }) {
-    const recipe = Recipe.create({ productName: product.name, ingredients })
+    const recipe = Recipe.create({ product, ingredients })
     product.recipes.push(recipe)
     return recipe
   }
@@ -49,21 +49,21 @@ class User {
     const previousStock =
       Stock.list
         .find(stock => stock.period === previousPeriod)
-        ?.stockList.find(item => item.rawMaterial === targetRawMaterial)?.quantity || 0
+        ?.stockList.find(item => item.rawMaterial.name === targetRawMaterial.name)?.quantity || 0
 
     const actualStock =
       Stock.list
         .find(stock => stock.period === targetPeriod)
-        ?.stockList.find(item => item.rawMaterial === targetRawMaterial)?.quantity || 0
+        ?.stockList.find(item => item.rawMaterial.name === targetRawMaterial.name)?.quantity || 0
 
     // Filter purchases for the specific date
     const filteredPurchases = Purchase.list.filter(purchase => purchase.period === targetPeriod)
     // Sum up the values in Filtered purchases for the specified Raw Material
     const totalPurchasedQuantity = filteredPurchases.reduce((sum, purchase) => {
-      const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial === targetRawMaterial)
+      const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial.name === targetRawMaterial.name)
       return sum + (purchaseItem ? purchaseItem.quantity : 0)
     }, 0)
-
+    console.log('=============================================')
     console.log(`Stock analysis for ${targetRawMaterial.name} in period ${targetPeriod}`)
     console.log('Starting Stock : ', previousStock)
     console.log('Finishing Stock : ', actualStock)
@@ -79,12 +79,13 @@ class User {
 
     // Sum up the total consumption of the target raw material
     const totalRecipeConsumption = salesData.salesList.reduce((sum, sale) => {
-      const recipe = sale.product.recipes.find(recipe =>
-        recipe.ingredients.some(ingredient => ingredient.rawMaterial === targetRawMaterial)
+      const productN = Product.list.find(product => product.name === sale.product.name)
+      const recipe = productN.recipes.find(recipe =>
+        recipe.ingredients.some(ingredient => ingredient.rawMaterial.name === targetRawMaterial.name)
       )
 
       if (recipe) {
-        const ingredient = recipe.ingredients.find(ingredient => ingredient.rawMaterial === targetRawMaterial)
+        const ingredient = recipe.ingredients.find(ingredient => ingredient.rawMaterial.name === targetRawMaterial.name)
         if (ingredient) {
           sum += sale.quantity * ingredient.quantity
         }
@@ -107,6 +108,7 @@ class User {
   }
 
   stockCheckForList(targetRawMaterials, targetPeriod) {
+    console.log('xxxx :', targetRawMaterials)
     targetRawMaterials.forEach(rawMaterial => {
       this.stockCheck(rawMaterial, targetPeriod)
     })

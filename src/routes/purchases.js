@@ -11,8 +11,8 @@ router.get('/', function (req, res, next) {
 
 /* Create a new purchase  . */
 router.post('/', async function (req, res, next) {
-  const user = User.list.find(user => user.name === req.body.user)
-  const supplier = Supplier.list.find(supplier => supplier.name === req.body.supplier)
+  const user = User.list.find(user => user.name === req.body.user.name)
+  const supplier = Supplier.list.find(supplier => supplier.name === req.body.supplier.name)
   const newPurchase = await user.purchase(supplier, req.body.date, req.body.period, req.body.purchaseItems)
   res.send(newPurchase)
 })

@@ -13,4 +13,10 @@ router.post('/', async function (req, res, next) {
   res.send(newUser)
 })
 
+router.post('/stock-control', async function (req, res, next) {
+  const user = User.list.find(user => user.name === req.body.user.name)
+  user.stockCheckForList(req.body.stockListToCheck, req.body.period)
+  res.send('Stock Control OK')
+})
+
 module.exports = router

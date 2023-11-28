@@ -6,6 +6,13 @@ const User = require('../user')
 /* GET Product list. */
 router.get('/', function (req, res, next) {
   res.send(Product.list)
+  // res.send(
+  //   Product.list.map(product => ({
+  //     name: product.name,
+  //     price: product.price,
+  //     recipes: product.recipes.map(recipe => recipe.toJSON()),
+  //   }))
+  // )
 })
 
 /* Create a new product  . */
@@ -26,6 +33,7 @@ router.post('/:productID/recipes', async function (req, res, next) {
   const user = User.list.find(user => user.name === req.body.user.name)
   const newRecipe = await user.createRecipe({ product: product, ingredients: req.body.ingredients })
   res.send(newRecipe)
+  // res.send({ product: { name: product.name, price: product.price }, ingredients: newRecipe.ingredients })
 })
 
 router.get('/:productID/recipes', async function (req, res, next) {

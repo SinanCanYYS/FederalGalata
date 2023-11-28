@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
 
 /* Add a new stock data  . */
 router.post('/', async function (req, res, next) {
-  const user = User.list.find(user => user.name === req.body.user)
+  const user = User.list.find(user => user.name === req.body.user.name)
   const newStockData = await user.addStock(req.body.period, req.body.stockData)
   res.send(newStockData)
 })
