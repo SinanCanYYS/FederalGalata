@@ -1,10 +1,11 @@
 var express = require('express')
 var router = express.Router()
-const User = require('../user')
+const User = require('../models/user')
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send(User.list)
+router.get('/', async function (req, res, next) {
+  const user = await User.find()
+  res.send(user)
 })
 
 /* Create a new users  . */
@@ -14,7 +15,7 @@ router.post('/', async function (req, res, next) {
 })
 
 router.post('/stock-control', async function (req, res, next) {
-  const user = User.list.find(user => user.name === req.body.user.name)
+  const user = await User.findById(req.body.user)
   user.stockCheckForList(req.body.stockListToCheck, req.body.period)
   res.send('Stock Control OK')
 })

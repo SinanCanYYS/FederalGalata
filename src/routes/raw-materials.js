@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const RawMaterial = require('../rawmaterial')
-const User = require('../user')
+const RawMaterial = require('../models/rawmaterial')
+const User = require('../models/user')
 
 /* GET RawMaterial list. */
 router.get('/', function (req, res, next) {
@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
 
 /* Create a new raw material  . */
 router.post('/', async function (req, res, next) {
-  const user = User.list.find(user => user.name === req.body.user.name)
+  const user = await User.findById(req.body.user)
   const newRawMaterial = await user.createRawmaterial({
     name: req.body.name,
     category: req.body.category,

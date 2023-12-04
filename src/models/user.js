@@ -4,13 +4,20 @@ const Rawmaterial = require('./rawmaterial')
 const Purchase = require('./purchase')
 const Stock = require('./stock')
 const Sales = require('./sales')
-const getPreviousPeriod = require('./helper/get-previous-period')
+const getPreviousPeriod = require('../helper/get-previous-period')
+
+const mongoose = require('mongoose')
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  age: String,
+})
 
 class User {
-  constructor(name, age) {
-    this.name = name
-    this.age = age
-  }
+  // constructor(name, age) {
+  //   this.name = name
+  //   this.age = age
+  // }
   createRecipe({ product, ingredients }) {
     const recipe = Recipe.create({ product, ingredients })
     product.recipes.push(recipe)
@@ -113,12 +120,15 @@ class User {
       this.stockCheck(rawMaterial, targetPeriod)
     })
   }
-  static create({ name, age }) {
-    const newUser = new User(name, age)
-    User.list.push(newUser)
-    return newUser
-  }
-  static list = []
+  // static create({ name, age }) {
+  //   const newUser = new User(name, age)
+  //   User.list.push(newUser)
+  //   return newUser
+  // }
+  // static list = []
 }
 
-module.exports = User
+// module.exports = User
+
+userSchema.loadClass(User)
+module.exports = mongoose.model('User', userSchema)

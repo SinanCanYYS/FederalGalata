@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Supplier = require('../supplier')
+const Supplier = require('../models/supplier')
 
 /* GET supplier listing. */
-router.get('/', function (req, res, next) {
-  res.send(Supplier.list)
+router.get('/', async function (req, res, next) {
+  const supplier = await Supplier.find()
+  res.send(supplier)
 })
 
 /* Create a new supplier  . */

@@ -1,11 +1,11 @@
-const Stock = require('./stock')
-const Sales = require('./sales')
-const Supplier = require('./supplier')
-const User = require('./user')
-const Purchase = require('./purchase')
-const Rawmaterial = require('./rawmaterial')
-const Product = require('./product')
-const Recipe = require('./recipe')
+const Stock = require('./models/stock')
+const Sales = require('./models/sales')
+const Supplier = require('./models/supplier')
+const User = require('./models/user')
+const Purchase = require('./models/purchase')
+const Rawmaterial = require('./models/rawmaterial')
+const Product = require('./models/product')
+const Recipe = require('./models/recipe')
 const axios = require('axios')
 
 axios.defaults.baseURL = 'http://localhost:3000'
@@ -42,7 +42,7 @@ async function main() {
   // defining products and raw materials with axios
   const americano = (
     await axios.post('/products', {
-      user: sinan,
+      user: sinan._id,
       name: 'Americano',
       category: 'Drink',
       subCategory: 'Coffee',
@@ -52,7 +52,7 @@ async function main() {
 
   const latte = (
     await axios.post('/products', {
-      user: sinan,
+      user: sinan._id,
       name: 'Latte',
       category: 'Drink',
       subCategory: 'Coffee',
@@ -62,7 +62,7 @@ async function main() {
 
   const chocolateLatte = (
     await axios.post('/products', {
-      user: sinan,
+      user: sinan._id,
       name: 'Chocolate Latte',
       category: 'Drink',
       subCategory: 'Coffee',
@@ -74,7 +74,7 @@ async function main() {
   // const chocolateLatte = sinan.createProduct('Chocolate Latte', 'Drink', 'Coffee', 120)
   const coffeeBean = (
     await axios.post('/raw-materials', {
-      user: sinan,
+      user: sinan._id,
       name: 'Coffee Bean',
       category: 'Drink',
       subCategory: 'Coffee',
@@ -86,7 +86,7 @@ async function main() {
 
   const milk = (
     await axios.post('/raw-materials', {
-      user: sinan,
+      user: sinan._id,
       name: 'Milk',
       category: 'Drink',
       subCategory: 'Coffee',
@@ -98,7 +98,7 @@ async function main() {
 
   const syrup = (
     await axios.post('/raw-materials', {
-      user: sinan,
+      user: sinan._id,
       name: 'Syrup',
       category: 'Drink',
       subCategory: 'Coffee',
@@ -113,12 +113,12 @@ async function main() {
 
   // defining recipes with axios
   const americanoRecipe = await axios.post('/products/Americano/recipes', {
-    user: sinan,
+    user: sinan._id,
     ingredients: [{ rawMaterial: coffeeBean, quantity: 20 }],
   })
 
   const latteRecipe = await axios.post('/products/Latte/recipes', {
-    user: sinan,
+    user: sinan._id,
     ingredients: [
       { rawMaterial: coffeeBean, quantity: 11 },
       { rawMaterial: milk, quantity: 200 },
@@ -126,7 +126,7 @@ async function main() {
   })
 
   const chocolateLatteRecipe = await axios.post('/products/Chocolate Latte/recipes', {
-    user: sinan,
+    user: sinan._id,
     ingredients: [
       { rawMaterial: coffeeBean, quantity: 5 },
       { rawMaterial: milk, quantity: 100 },
@@ -137,8 +137,8 @@ async function main() {
   // purchases with axios
 
   const purchase1 = await axios.post('/purchases', {
-    user: sinan,
-    supplier: fcc,
+    user: sinan._id,
+    supplier: fcc._id,
     date: '01.02.2023',
     period: '02.23',
     purchaseItems: [
@@ -149,24 +149,24 @@ async function main() {
   })
 
   const purchase2 = await axios.post('/purchases', {
-    user: sinan,
-    supplier: fcc,
+    user: sinan._id,
+    supplier: fcc._id,
     date: '01.02.2023',
     period: '02.23',
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 5, price: 300 }],
   })
 
   const purchase3 = await axios.post('/purchases', {
-    user: sinan,
-    supplier: fcc,
+    user: sinan._id,
+    supplier: fcc._id,
     date: '01.02.2023',
     period: '02.23',
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 15, price: 300 }],
   })
 
   const purchase4 = await axios.post('/purchases', {
-    user: sinan,
-    supplier: fcc,
+    user: sinan._id,
+    supplier: fcc._id,
     date: '01.02.2023',
     period: '02.23',
     purchaseItems: [
@@ -178,7 +178,7 @@ async function main() {
 
   // stock data entry with axios
   const januaryStock = await axios.post('/stocks', {
-    user: sinan,
+    user: sinan._id,
     period: '01.23',
     stockData: [
       { rawMaterial: coffeeBean, quantity: 30 },
@@ -188,7 +188,7 @@ async function main() {
   })
 
   const februaryStock = await axios.post('/stocks', {
-    user: sinan,
+    user: sinan._id,
     period: '02.23',
     stockData: [
       { rawMaterial: coffeeBean, quantity: 45 },
@@ -199,7 +199,7 @@ async function main() {
 
   // sales data entry with axios
   const februarySales = await axios.post('/sales', {
-    user: sinan,
+    user: sinan._id,
     period: '02.23',
     salesData: [
       { product: americano, quantity: 1000 },
@@ -209,7 +209,7 @@ async function main() {
   })
 
   const marchSales = await axios.post('/sales', {
-    user: sinan,
+    user: sinan._id,
     period: '03.23',
     salesData: [
       { product: americano, quantity: 1200 },
@@ -220,13 +220,13 @@ async function main() {
 
   // stock check with axios
   await axios.post('/users/stock-control', {
-    user: sinan,
+    user: sinan._id,
     stockListToCheck: [coffeeBean, milk, syrup],
     period: '02.23',
   })
 
   await axios.post('/users/stock-control', {
-    user: sinan,
+    user: sinan._id,
     stockListToCheck: [coffeeBean],
     period: '03.23',
   })
