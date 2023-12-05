@@ -11,6 +11,11 @@ const axios = require('axios')
 axios.defaults.baseURL = 'http://localhost:3000'
 
 async function main() {
+  // await User.deleteMany()
+  // await Product.deleteMany()
+  // await Rawmaterial.deleteMany()
+  // await Recipe.deleteMany()
+
   // create a user with axios
   await axios.post('/users', {
     name: 'Tete',
@@ -112,12 +117,12 @@ async function main() {
   // const syrup = sinan.createRawmaterial('Syrup', 'Drink', 'Coffee', 400, true, 'lt')
 
   // defining recipes with axios
-  const americanoRecipe = await axios.post('/products/Americano/recipes', {
+  const americanoRecipe = await axios.post(`/products/${americano._id}/recipes`, {
     user: sinan._id,
     ingredients: [{ rawMaterial: coffeeBean, quantity: 20 }],
   })
 
-  const latteRecipe = await axios.post('/products/Latte/recipes', {
+  const latteRecipe = await axios.post(`/products/${latte._id}/recipes`, {
     user: sinan._id,
     ingredients: [
       { rawMaterial: coffeeBean, quantity: 11 },
@@ -125,7 +130,7 @@ async function main() {
     ],
   })
 
-  const chocolateLatteRecipe = await axios.post('/products/Chocolate Latte/recipes', {
+  const chocolateLatteRecipe = await axios.post(`/products/${chocolateLatte._id}/recipes`, {
     user: sinan._id,
     ingredients: [
       { rawMaterial: coffeeBean, quantity: 5 },
@@ -133,6 +138,8 @@ async function main() {
       { rawMaterial: syrup, quantity: 5 },
     ],
   })
+
+  console.log(chocolateLatteRecipe.data.ingredients[0].rawMaterial)
 
   // purchases with axios
 
@@ -218,18 +225,18 @@ async function main() {
     ],
   })
 
-  // stock check with axios
-  await axios.post('/users/stock-control', {
-    user: sinan._id,
-    stockListToCheck: [coffeeBean, milk, syrup],
-    period: '02.23',
-  })
+  // // stock check with axios
+  // await axios.post('/users/stock-control', {
+  //   user: sinan._id,
+  //   stockListToCheck: [coffeeBean, milk, syrup],
+  //   period: '02.23',
+  // })
 
-  await axios.post('/users/stock-control', {
-    user: sinan._id,
-    stockListToCheck: [coffeeBean],
-    period: '03.23',
-  })
+  // await axios.post('/users/stock-control', {
+  //   user: sinan._id,
+  //   stockListToCheck: [coffeeBean],
+  //   period: '03.23',
+  // })
 
   // // sinan.stockCheck(milk, '02.23')
   // sinan.stockCheckForList([coffeeBean, milk, syrup], '02.23')

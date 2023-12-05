@@ -37,6 +37,11 @@ app.use('/purchases', purchasesRouter)
 app.use('/stocks', stocksRouter)
 app.use('/sales', salesRouter)
 
+app.get('/delete', async (req, res) => {
+  await User.deleteMany()
+  res.send('Deleted')
+})
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

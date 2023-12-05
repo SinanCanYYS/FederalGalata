@@ -4,8 +4,9 @@ const Product = require('../models/product')
 const User = require('../models/user')
 
 /* GET Product list. */
-router.get('/', function (req, res, next) {
-  res.send(Product.list)
+router.get('/', async function (req, res, next) {
+  const productList = await Product.find()
+  res.send(productList)
   // res.send(
   //   Product.list.map(product => ({
   //     name: product.name,
@@ -31,7 +32,7 @@ router.post('/', async function (req, res, next) {
 
 // Creating a recipe for a product //
 router.post('/:productID/recipes', async function (req, res, next) {
-  const product = Product.list.find(product => product.name === req.params.productID)
+  const product = await Product.findById(req.params.productID)
   const user = await User.findById(req.body.user)
   const newRecipe = await user.createRecipe({ product: product, ingredients: req.body.ingredients })
   res.send(newRecipe)
@@ -39,7 +40,7 @@ router.post('/:productID/recipes', async function (req, res, next) {
 })
 
 router.get('/:productID/recipes', async function (req, res, next) {
-  const product = Product.list.find(product => product.name === req.params.productID)
+  const product = await Product.findById(req.params.productID)
   res.send(product.recipes)
 })
 

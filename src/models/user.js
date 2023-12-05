@@ -18,34 +18,35 @@ class User {
   //   this.name = name
   //   this.age = age
   // }
-  createRecipe({ product, ingredients }) {
-    const recipe = Recipe.create({ product, ingredients })
+  async createRecipe({ product, ingredients }) {
+    const recipe = await Recipe.create({ product, ingredients })
     product.recipes.push(recipe)
+    await product.save()
     return recipe
   }
 
-  createProduct({ name, category, subCategory, price }) {
-    const product = Product.create({ name, category, subCategory, price })
+  async createProduct({ name, category, subCategory, price }) {
+    const product = await Product.create({ name, category, subCategory, price })
     return product
   }
 
-  createRawmaterial({ name, category, subCategory, price, stockControl, unit }) {
-    const rawmaterial = Rawmaterial.create({ name, category, subCategory, price, stockControl, unit })
+  async createRawmaterial({ name, category, subCategory, price, stockControl, unit }) {
+    const rawmaterial = await Rawmaterial.create({ name, category, subCategory, price, stockControl, unit })
     return rawmaterial
   }
 
-  purchase(supplier, date, period, purchaseItems) {
-    const purchase = Purchase.create(supplier, date, period, purchaseItems)
+  async purchase(supplier, date, period, purchaseItems) {
+    const purchase = await Purchase.create(supplier, date, period, purchaseItems)
     return purchase
   }
 
-  addStock(period, stockList) {
-    const monthlyStock = Stock.create({ period, stockList })
+  async addStock(period, stockList) {
+    const monthlyStock = await Stock.create({ period, stockList })
     return monthlyStock
   }
 
-  addSales(period, salesList) {
-    const monthlySales = Sales.create({ period, salesList })
+  async addSales(period, salesList) {
+    const monthlySales = await Sales.create({ period, salesList })
     return monthlySales
   }
 
