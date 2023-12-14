@@ -19,7 +19,6 @@ router.get('/', async function (req, res, next) {
 /* Create a new product  . */
 router.post('/', async function (req, res, next) {
   const user = await User.findById(req.body.user)
-  console.log('The User: ', user)
   // const user = User.list.find(user => user.name === req.body.user.name)
   const newProduct = await user.createProduct({
     name: req.body.name,

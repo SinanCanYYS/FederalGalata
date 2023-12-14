@@ -11,10 +11,7 @@ const axios = require('axios')
 axios.defaults.baseURL = 'http://localhost:3000'
 
 async function main() {
-  // await User.deleteMany()
-  // await Product.deleteMany()
-  // await Rawmaterial.deleteMany()
-  // await Recipe.deleteMany()
+  await axios.get('/delete')
 
   // create a user with axios
   await axios.post('/users', {
@@ -36,9 +33,6 @@ async function main() {
   ).data
 
   // fetch users with Axios
-  // await axios.get('/users').then(response => {
-  //   console.log(response.data)
-  // })
   const allUserList = await axios.get('/users')
 
   // Creating Suppliers with axios
@@ -75,8 +69,6 @@ async function main() {
     })
   ).data
 
-  // const latte = sinan.createProduct('Latte', 'Drink', 'Coffee', 90)
-  // const chocolateLatte = sinan.createProduct('Chocolate Latte', 'Drink', 'Coffee', 120)
   const coffeeBean = (
     await axios.post('/raw-materials', {
       user: sinan._id,
@@ -112,9 +104,6 @@ async function main() {
       unit: 'lt',
     })
   ).data
-  // const coffeeBean = sinan.createRawmaterial('Coffee Bean', 'Drink', 'Coffee', 250, true, 'kg')
-  // const milk = sinan.createRawmaterial('Milk', 'Drink', 'Coffee', 35, true, 'lt')
-  // const syrup = sinan.createRawmaterial('Syrup', 'Drink', 'Coffee', 400, true, 'lt')
 
   // defining recipes with axios
   const americanoRecipe = await axios.post(`/products/${americano._id}/recipes`, {
@@ -139,10 +128,7 @@ async function main() {
     ],
   })
 
-  console.log(chocolateLatteRecipe.data.ingredients[0].rawMaterial)
-
   // purchases with axios
-
   const purchase1 = await axios.post('/purchases', {
     user: sinan._id,
     supplier: fcc._id,
@@ -183,6 +169,18 @@ async function main() {
     ],
   })
 
+  const purchase5 = await axios.post('/purchases', {
+    user: sinan._id,
+    supplier: fcc._id,
+    date: '01.01.2023',
+    period: '01.23',
+    purchaseItems: [
+      { rawMaterial: coffeeBean, quantity: 1, price: 300 },
+      { rawMaterial: milk, quantity: 1, price: 30 },
+      { rawMaterial: syrup, quantity: 1, price: 400 },
+    ],
+  })
+
   // stock data entry with axios
   const januaryStock = await axios.post('/stocks', {
     user: sinan._id,
@@ -201,6 +199,16 @@ async function main() {
       { rawMaterial: coffeeBean, quantity: 45 },
       { rawMaterial: milk, quantity: 18 },
       { rawMaterial: syrup, quantity: 7 },
+    ],
+  })
+
+  const marchStock = await axios.post('/stocks', {
+    user: sinan._id,
+    period: '03.23',
+    stockData: [
+      { rawMaterial: coffeeBean, quantity: 10 },
+      { rawMaterial: milk, quantity: 10 },
+      { rawMaterial: syrup, quantity: 10 },
     ],
   })
 
@@ -225,17 +233,17 @@ async function main() {
     ],
   })
 
-  // // stock check with axios
-  // await axios.post('/users/stock-control', {
-  //   user: sinan._id,
-  //   stockListToCheck: [coffeeBean, milk, syrup],
-  //   period: '02.23',
-  // })
+  // stock check with axios
+  await axios.post('/users/stock-control', {
+    user: sinan._id,
+    stockListToCheck: [coffeeBean._id, milk._id, syrup._id],
+    period: '02.23',
+  })
 
   // await axios.post('/users/stock-control', {
   //   user: sinan._id,
-  //   stockListToCheck: [coffeeBean],
-  //   period: '03.23',
+  //   stockListToCheck: [coffeeBean._id],
+  //   period: '02.23',
   // })
 
   // // sinan.stockCheck(milk, '02.23')

@@ -36,7 +36,7 @@ class User {
   }
 
   async purchase(supplier, date, period, purchaseItems) {
-    const purchase = await Purchase.create(supplier, date, period, purchaseItems)
+    const purchase = await Purchase.create({ supplier, date, period, purchaseItems })
     return purchase
   }
 
@@ -50,50 +50,64 @@ class User {
     return monthlySales
   }
 
-  stockCheck(targetRawMaterial, targetPeriod) {
+  async stockCheck(targetRawMaterialId, targetPeriod) {
     const previousPeriod = getPreviousPeriod(targetPeriod)
+    const targetRawMaterial = await Rawmaterial.findById(targetRawMaterialId)
 
     // Actual Stock Consumption Calculations
-    const previousStock =
-      Stock.list
-        .find(stock => stock.period === previousPeriod)
-        ?.stockList.find(item => item.rawMaterial.name === targetRawMaterial.name)?.quantity || 0
+    const previousStock = await Stock.findOne({ period: previousPeriod })
+    const previousStockItemQty =
+      previousStock?.stockList.find(item => item.rawMaterial._id.equals(targetRawMaterialId))?.quantity || 0
+    // console.log('Previous Stock : ', previousStock.stockList)
+    // console.log('Previous Stock Item Quantity : ', previousStockItemQty)
+    // const previousStock =
+    //   (await Stock.findOne({ period: previousPeriod })?.stockList.find(
+    //     item => item.rawMaterial.name === actualRawMaterial.name
+    //   )?.quantity) || 0
 
-    const actualStock =
-      Stock.list
-        .find(stock => stock.period === targetPeriod)
-        ?.stockList.find(item => item.rawMaterial.name === targetRawMaterial.name)?.quantity || 0
+    const actualStock = await Stock.findOne({ period: targetPeriod })
+    const actualStockItemQty =
+      actualStock?.stockList.find(item => item.rawMaterial._id.equals(targetRawMaterialId))?.quantity || 0
+    // console.log('Actual Stock : ', actualStock.stockList)
+    // console.log('Actual Stock Item Quantity : ', actualStockItemQty)
+    // const actualStock =
+    //   (await Stock.findOne({ period: targetPeriod })?.stockList.find(item =>
+    //     item.rawMaterial._id.equals(targetRawMaterialId)
+    //   )?.quantity) || 0
 
     // Filter purchases for the specific date
-    const filteredPurchases = Purchase.list.filter(purchase => purchase.period === targetPeriod)
+    const filteredPurchases = await Purchase.find({ period: targetPeriod })
+    // console.log('Filtered Purcs :', filteredPurchases)
     // Sum up the values in Filtered purchases for the specified Raw Material
     const totalPurchasedQuantity = filteredPurchases.reduce((sum, purchase) => {
-      const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial.name === targetRawMaterial.name)
+      const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial._id.equals(targetRawMaterialId))
       return sum + (purchaseItem ? purchaseItem.quantity : 0)
     }, 0)
     console.log('=============================================')
     console.log(`Stock analysis for ${targetRawMaterial.name} in period ${targetPeriod}`)
-    console.log('Starting Stock : ', previousStock)
-    console.log('Finishing Stock : ', actualStock)
+    console.log('Starting Stock : ', previousStockItemQty)
+    console.log('Finishing Stock : ', actualStockItemQty)
     console.log('Purchased Quantity : ', totalPurchasedQuantity)
     console.log('---------------------------------------------')
 
-    const calculatedConsumption = previousStock + totalPurchasedQuantity - actualStock
+    const calculatedConsumption = previousStockItemQty + totalPurchasedQuantity - actualStockItemQty
 
     console.log('Total Qty Consumed : ', calculatedConsumption)
 
     // Finding the target period Sales Data
-    const salesData = Sales.list.find(salesData => salesData.period === targetPeriod)
 
+    const salesData = await Sales.findOne({ period: targetPeriod })
+    // console.log('sales list : ', salesData.salesList)
     // Sum up the total consumption of the target raw material
     const totalRecipeConsumption = salesData.salesList.reduce((sum, sale) => {
-      const productN = Product.list.find(product => product.name === sale.product.name)
-      const recipe = productN.recipes.find(recipe =>
-        recipe.ingredients.some(ingredient => ingredient.rawMaterial.name === targetRawMaterial.name)
+      const product = sale.product
+      // console.log('sale.product.recipe:', product.recipes)
+      const recipe = product.recipes.find(recipe =>
+        recipe.ingredients.some(ingredient => ingredient.rawMaterial.equals(targetRawMaterialId))
       )
 
       if (recipe) {
-        const ingredient = recipe.ingredients.find(ingredient => ingredient.rawMaterial.name === targetRawMaterial.name)
+        const ingredient = recipe.ingredients.find(ingredient => ingredient.rawMaterial.equals(targetRawMaterialId))
         if (ingredient) {
           sum += sale.quantity * ingredient.quantity
         }
@@ -101,6 +115,24 @@ class User {
 
       return sum
     }, 0)
+
+    // Sum up the total consumption of the target raw material
+
+    // const totalRecipeConsumption = salesData.salesList.reduce((sum, sale) => {
+    //   const productN = Product.list.find(product => product.name === sale.product.name)
+    //   const recipe = productN.recipes.find(recipe =>
+    //     recipe.ingredients.some(ingredient => ingredient.rawMaterial.name === targetRawMaterial.name)
+    //   )
+
+    //   if (recipe) {
+    //     const ingredient = recipe.ingredients.find(ingredient => ingredient.rawMaterial.name === targetRawMaterial.name)
+    //     if (ingredient) {
+    //       sum += sale.quantity * ingredient.quantity
+    //     }
+    //   }
+
+    //   return sum
+    // }, 0)
 
     // Output the result
     console.log(`Calculated Recipe consumption': ${totalRecipeConsumption / 1000} kg`) // console.log(februarySalesData.salesList.reduce((sum, salesRecord) =>  sum + salesRecord.price)
@@ -115,12 +147,17 @@ class User {
     }
   }
 
-  stockCheckForList(targetRawMaterials, targetPeriod) {
-    console.log('xxxx :', targetRawMaterials)
-    targetRawMaterials.forEach(rawMaterial => {
-      this.stockCheck(rawMaterial, targetPeriod)
-    })
+  // stockCheckForList(targetRawMaterialsIds, targetPeriod) {
+  //   targetRawMaterialsIds.forEach(async rawMaterialId => {
+  //     await this.stockCheck(rawMaterialId, targetPeriod)
+  //   })
+  // }
+  async stockCheckForList(targetRawMaterialsIds, targetPeriod) {
+    for (const rawMaterialId of targetRawMaterialsIds) {
+      await this.stockCheck(rawMaterialId, targetPeriod)
+    }
   }
+
   // static create({ name, age }) {
   //   const newUser = new User(name, age)
   //   User.list.push(newUser)
