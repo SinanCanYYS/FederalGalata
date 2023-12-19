@@ -13,7 +13,8 @@ router.get('/', function (req, res, next) {
 router.post('/', async function (req, res, next) {
   const user = await User.findById(req.body.user)
   const supplier = await Supplier.findById(req.body.supplier)
-  const newPurchase = await user.purchase(supplier, req.body.date, req.body.period, req.body.purchaseItems)
+  // const newPurchase = await user.purchase(supplier, req.body.date, req.body.period, req.body.purchaseItems)
+  const newPurchase = await user.purchase(supplier, req.body.date, req.body.purchaseItems)
   res.send(newPurchase)
 })
 

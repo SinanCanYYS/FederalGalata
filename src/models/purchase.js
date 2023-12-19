@@ -29,6 +29,18 @@ const purchaseSchema = new mongoose.Schema(
   }
 )
 
+// Define a custom setter for the 'date' field to automatically update the 'period' field
+purchaseSchema.path('date').set(function (value) {
+  // Assuming that the 'date' field is in the format 'DD.MM.YYYY'
+  const dateParts = value.split('.')
+  const monthYear = `${dateParts[1]}.${dateParts[2].substring(2, 4)}`
+
+  // Updating the 'period' field
+  this.period = monthYear
+
+  return value
+})
+
 class Purchase {
   // constructor(supplier, date, period, purchaseItems) {
   //   this.supplier = supplier

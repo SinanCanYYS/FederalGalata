@@ -133,7 +133,7 @@ async function main() {
     user: sinan._id,
     supplier: fcc._id,
     date: '01.02.2023',
-    period: '02.23',
+    // period: '06.23',
     purchaseItems: [
       { rawMaterial: coffeeBean, quantity: 15, price: 300 },
       { rawMaterial: milk, quantity: 20, price: 30 },
@@ -145,7 +145,6 @@ async function main() {
     user: sinan._id,
     supplier: fcc._id,
     date: '01.02.2023',
-    period: '02.23',
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 5, price: 300 }],
   })
 
@@ -153,7 +152,6 @@ async function main() {
     user: sinan._id,
     supplier: fcc._id,
     date: '01.02.2023',
-    period: '02.23',
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 15, price: 300 }],
   })
 
@@ -161,7 +159,6 @@ async function main() {
     user: sinan._id,
     supplier: fcc._id,
     date: '01.02.2023',
-    period: '02.23',
     purchaseItems: [
       { rawMaterial: coffeeBean, quantity: 8, price: 300 },
       { rawMaterial: milk, quantity: 60, price: 30 },
@@ -173,12 +170,18 @@ async function main() {
     user: sinan._id,
     supplier: fcc._id,
     date: '01.01.2023',
-    period: '01.23',
     purchaseItems: [
       { rawMaterial: coffeeBean, quantity: 1, price: 300 },
       { rawMaterial: milk, quantity: 1, price: 30 },
       { rawMaterial: syrup, quantity: 1, price: 400 },
     ],
+  })
+
+  const purchase6 = await axios.post('/purchases', {
+    user: sinan._id,
+    supplier: fcc._id,
+    date: '01.05.2023',
+    purchaseItems: [{ rawMaterial: coffeeBean, quantity: 88, price: 400 }],
   })
 
   // stock data entry with axios

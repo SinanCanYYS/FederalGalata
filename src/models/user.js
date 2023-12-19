@@ -35,8 +35,8 @@ class User {
     return rawmaterial
   }
 
-  async purchase(supplier, date, period, purchaseItems) {
-    const purchase = await Purchase.create({ supplier, date, period, purchaseItems })
+  async purchase(supplier, date, purchaseItems) {
+    const purchase = await Purchase.create({ supplier, date, purchaseItems })
     return purchase
   }
 
