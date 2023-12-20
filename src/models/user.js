@@ -5,6 +5,7 @@ const Purchase = require('./purchase')
 const Stock = require('./stock')
 const Sales = require('./sales')
 const getPreviousPeriod = require('../helper/get-previous-period')
+const { getItemStockQty, getTotalPurchasedQuantity, getRecipeConsumption } = require('../helper/stockCheck')
 
 const mongoose = require('mongoose')
 
@@ -50,50 +51,16 @@ class User {
     return monthlySales
   }
 
-  async getItemStockQty(targetRawMaterialId, period) {
-    const stock = await Stock.findOne({ period: period })
-    return stock?.stockList.find(item => item.rawMaterial._id.equals(targetRawMaterialId))?.quantity || 0
-  }
-
-  async getTotalPurchasedQuantity(targetRawMaterialId, targetPeriod) {
-    const filteredPurchases = await Purchase.find({ period: targetPeriod })
-    return filteredPurchases.reduce((sum, purchase) => {
-      const purchaseItem = purchase.purchaseItems.find(item => item.rawMaterial._id.equals(targetRawMaterialId))
-      return sum + (purchaseItem ? purchaseItem.quantity : 0)
-    }, 0)
-  }
-
-  async getRecipeConsumption(targetRawMaterialId, targetPeriod) {
-    // Finding the target period Sales Data
-    const salesData = await Sales.findOne({ period: targetPeriod })
-    // Sum up the total consumption of the target raw material
-    return salesData.salesList.reduce((sum, sale) => {
-      const product = sale.product
-      const recipe = product.recipes.find(recipe =>
-        recipe.ingredients.some(ingredient => ingredient.rawMaterial.equals(targetRawMaterialId))
-      )
-
-      if (recipe) {
-        const ingredient = recipe.ingredients.find(ingredient => ingredient.rawMaterial.equals(targetRawMaterialId))
-        if (ingredient) {
-          sum += sale.quantity * ingredient.quantity
-        }
-      }
-
-      return sum
-    }, 0)
-  }
-
   async stockCheck(targetRawMaterialId, targetPeriod) {
     const previousPeriod = getPreviousPeriod(targetPeriod)
     const targetRawMaterial = await Rawmaterial.findById(targetRawMaterialId)
 
     // Actual Stock Consumption Calculations
-    const previousItemStockQty = await this.getItemStockQty(targetRawMaterialId, previousPeriod)
-    const actualItemStockQty = await this.getItemStockQty(targetRawMaterialId, targetPeriod)
-    const totalPurchasedQuantity = await this.getTotalPurchasedQuantity(targetRawMaterialId, targetPeriod)
+    const previousItemStockQty = await getItemStockQty(targetRawMaterialId, previousPeriod)
+    const actualItemStockQty = await getItemStockQty(targetRawMaterialId, targetPeriod)
+    const totalPurchasedQuantity = await getTotalPurchasedQuantity(targetRawMaterialId, targetPeriod)
     const calculatedConsumption = previousItemStockQty + totalPurchasedQuantity - actualItemStockQty
-    const totalRecipeConsumption = await this.getRecipeConsumption(targetRawMaterialId, targetPeriod)
+    const totalRecipeConsumption = await getRecipeConsumption(targetRawMaterialId, targetPeriod)
 
     // Output the result
     console.log('=============================================')
