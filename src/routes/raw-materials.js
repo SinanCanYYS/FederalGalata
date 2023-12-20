@@ -4,8 +4,9 @@ const RawMaterial = require('../models/rawmaterial')
 const User = require('../models/user')
 
 /* GET RawMaterial list. */
-router.get('/', function (req, res, next) {
-  res.send(RawMaterial.list)
+router.get('/', async function (req, res, next) {
+  const rawMaterialList = await RawMaterial.find()
+  res.send(rawMaterialList)
 })
 
 /* Create a new raw material  . */

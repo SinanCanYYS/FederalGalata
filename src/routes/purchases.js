@@ -5,8 +5,9 @@ const User = require('../models/user')
 const Supplier = require('../models/supplier')
 
 /* GET purcases listing. */
-router.get('/', function (req, res, next) {
-  res.send(Purchase.list)
+router.get('/', async function (req, res, next) {
+  const purchaseList = await Purchase.find()
+  res.send(purchaseList)
 })
 
 /* Create a new purchase  . */
