@@ -32,6 +32,20 @@ async function main() {
     })
   ).data
 
+  const mauro = (
+    await axios.post('/users', {
+      name: 'Mauro',
+      age: 35,
+    })
+  ).data
+
+  const zaha = (
+    await axios.post('/users', {
+      name: 'Zaha',
+      age: 28,
+    })
+  ).data
+
   // fetch users with Axios
   const allUserList = await axios.get('/users')
 
@@ -252,5 +266,7 @@ async function main() {
   // // sinan.stockCheck(milk, '02.23')
   // sinan.stockCheckForList([coffeeBean, milk, syrup], '02.23')
 }
+
+console.log('testkeretest')
 
 main()
