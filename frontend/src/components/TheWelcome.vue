@@ -5,9 +5,23 @@ import ToolingIcon from './icons/IconTooling.vue'
 import EcosystemIcon from './icons/IconEcosystem.vue'
 import CommunityIcon from './icons/IconCommunity.vue'
 import SupportIcon from './icons/IconSupport.vue'
+
+import axios from 'axios'
+
+// const { data: userList } = await axios.get('http://api:3000/users')
+// console.log(userList)
+const usersResponse = await axios.get('http://localhost:3000/users')
+
+const users = usersResponse.data
 </script>
 
 <template>
+  <h1>Federal Galata Stock Control</h1>
+  <ul>
+    <li v-for="user in users" :key="user._id">
+      {{ user.name }}
+    </li>
+  </ul>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
