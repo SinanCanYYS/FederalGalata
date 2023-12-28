@@ -15,8 +15,8 @@ async function main() {
 
   // create a user with axios
   await axios.post('/users', {
-    name: 'Zeze',
-    age: 22,
+    name: 'Zizi',
+    age: 44,
   })
   const sinan = (
     await axios.post('/users', {
