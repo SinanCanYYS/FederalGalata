@@ -1,0 +1,36 @@
+services:
+  api:
+    image: federal-stock.api
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    volumes:
+      - ./src:/app/src
+    # env_file:
+    #   - .env
+    environment:
+      # - MONGODB_CONNECTION_STRING=mongodb+srv://SinanCanYYS:Waldachtal2023@yys-cluster0.wnjbs3t.mongodb.net/FederalStock?retryWrites=true&w=majority
+      # - MONGODB_CONNECTION_STRING=${MONGODB_CONNECTION_STRING}
+      - MONGODB_CONNECTION_STRING=mongodb://mongodb:27017/federalStockData
+
+  mongodb:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data:/data/db
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    working_dir: /app
+    volumes:
+      - ./index.js:/app/index.js
+    # command: ['dockerize', '-wait', 'tcp://api:3000', '-timeout', '60s', 'node', 'index.js']
+    # command: node index.js
+    depends_on:
+      - api
+      # - mongodb
