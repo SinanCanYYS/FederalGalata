@@ -1,48 +1,34 @@
-const Stock = require('./models/stock')
-const Sales = require('./models/sales')
-const Supplier = require('./models/supplier')
-const User = require('./models/user')
-const Purchase = require('./models/purchase')
-const Rawmaterial = require('./models/rawmaterial')
-const Product = require('./models/product')
-const Recipe = require('./models/recipe')
+// const Stock = require('./src/models/stock')
+// const Sales = require('./src/models/sales')
+// const Supplier = require('./src/models/supplier')
+// const User = require('./src/models/user')
+// const Purchase = require('./src/models/purchase')
+// const Rawmaterial = require('./src/models/rawmaterial')
+// const Product = require('./src/models/product')
+// const Recipe = require('./src/models/recipe')
 const axios = require('axios')
 
-axios.defaults.baseURL = 'http://localhost:3000'
+axios.defaults.baseURL = 'http://api:3000'
 
 async function main() {
   await axios.get('/delete')
 
   // create a user with axios
   await axios.post('/users', {
-    name: 'Tete',
-    age: 20,
+    name: 'Zeze',
+    age: 22,
   })
   const sinan = (
     await axios.post('/users', {
       name: 'Sinan',
-      age: 50,
+      age: 55,
     })
   ).data
 
   const numan = (
     await axios.post('/users', {
       name: 'Numan',
-      age: 30,
-    })
-  ).data
-
-  const mauro = (
-    await axios.post('/users', {
-      name: 'Mauro',
-      age: 35,
-    })
-  ).data
-
-  const zaha = (
-    await axios.post('/users', {
-      name: 'Zaha',
-      age: 28,
+      age: 33,
     })
   ).data
 
