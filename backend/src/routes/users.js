@@ -8,6 +8,12 @@ router.get('/', async function (req, res, next) {
   res.send(user)
 })
 
+/* GET user detail */
+router.get('/:id', async function (req, res, next) {
+  const user = await User.findById(req.params.id)
+  res.send(user)
+})
+
 /* Create a new users  . */
 router.post('/', async function (req, res, next) {
   const newUser = await User.create({ name: req.body.name, age: req.body.age })

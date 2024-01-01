@@ -26,6 +26,8 @@ services:
       - '5173:5173'
     # depends_on:
     #   - mongodb
+    env_file:
+      - frontend/.env
     volumes:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
@@ -49,4 +51,4 @@ services:
     # command: node index.js
     depends_on:
       - api
-      - mongodb
+      # - mongodb

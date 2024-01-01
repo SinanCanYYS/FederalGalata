@@ -5,7 +5,7 @@ import TheWelcome from '../components/TheWelcome.vue'
 <template>
   <main>
     <Suspense>
-      <TheWelcome />
+      <!-- <TheWelcome /> -->
     </Suspense>
   </main>
 </template>

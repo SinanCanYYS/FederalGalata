@@ -255,4 +255,4 @@ async function main() {
 
 console.log('testkeretest')
 
-main()
+setTimeout(() => main(), 3000)
