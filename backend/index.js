@@ -13,15 +13,19 @@ axios.defaults.baseURL = 'http://api:3000'
 async function main() {
   await axios.get('/delete')
 
-  // create a user with axios
+  // register a user with axios
   await axios.post('/users', {
     name: 'Zizi',
     age: 44,
+    email: 'zizi@fed.com',
+    password: 'zizican',
   })
   const sinan = (
     await axios.post('/users', {
       name: 'Sinan',
       age: 55,
+      email: 'sinan@fed.com',
+      password: 'sinancan',
     })
   ).data
 
@@ -29,8 +33,39 @@ async function main() {
     await axios.post('/users', {
       name: 'Numan',
       age: 33,
+      email: 'numan@fed.com',
+      password: 'numancan',
     })
   ).data
+
+  const loggedInUser = (
+    await axios.post('/accounts/session', {
+      email: 'zizi@fed.com',
+      password: 'zizican',
+    })
+  ).data
+
+  console.log('Sinan', sinan)
+  console.log('Logged In User', loggedInUser)
+
+  // // create a user with axios
+  // await axios.post('/users', {
+  //   name: 'Zizi',
+  //   age: 44,
+  // })
+  // const sinan = (
+  //   await axios.post('/users', {
+  //     name: 'Sinan',
+  //     age: 55,
+  //   })
+  // ).data
+
+  // const numan = (
+  //   await axios.post('/users', {
+  //     name: 'Numan',
+  //     age: 33,
+  //   })
+  // ).data
 
   // fetch users with Axios
   const allUserList = await axios.get('/users')
@@ -237,11 +272,11 @@ async function main() {
   })
 
   // stock check with axios
-  await axios.post('/users/stock-control', {
-    user: sinan._id,
-    stockListToCheck: [coffeeBean._id, milk._id, syrup._id],
-    period: '02.23',
-  })
+  // await axios.post('/users/stock-control', {
+  //   user: sinan._id,
+  //   stockListToCheck: [coffeeBean._id, milk._id, syrup._id],
+  //   period: '02.23',
+  // })
 
   // await axios.post('/users/stock-control', {
   //   user: sinan._id,

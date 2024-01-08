@@ -13,6 +13,7 @@ const MongoStore = require('connect-mongo')
 const mongoose = require('mongoose')
 
 const indexRouter = require('./routes')
+const accountsRouter = require('./routes/accounts')
 const usersRouter = require('./routes/users')
 const suppliersRouter = require('./routes/suppliers')
 const productsRouter = require('./routes/products')
@@ -20,6 +21,16 @@ const rawMaterialsRouter = require('./routes/raw-materials')
 const purchasesRouter = require('./routes/purchases')
 const stocksRouter = require('./routes/stocks')
 const salesRouter = require('./routes/sales')
+
+const User = require('./models/user')
+const passport = require('passport')
+
+// use static authenticate method of model in LocalStrategy
+passport.use(User.createStrategy())
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 const app = express()
 
@@ -45,8 +56,10 @@ app.use(
   })
 )
 
+app.use(passport.session())
+
 app.use((req, res, next) => {
-  console.log('Session: ', req.session)
+  // console.log('Session: ', req.session)
   next()
 })
 
@@ -58,6 +71,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+app.use('/accounts', accountsRouter)
 app.use('/suppliers', suppliersRouter)
 app.use('/products', productsRouter)
 app.use('/raw-materials', rawMaterialsRouter)

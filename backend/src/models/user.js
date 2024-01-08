@@ -1,3 +1,5 @@
+const passportLocalMongoose = require('passport-local-mongoose')
+
 const Recipe = require('./recipe')
 const Product = require('./product')
 const Rawmaterial = require('./rawmaterial')
@@ -10,10 +12,14 @@ const { getItemStockQty, getTotalPurchasedQuantity, getRecipeConsumption } = req
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   age: String,
 })
 
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' })
 class User {
   // constructor(name, age) {
   //   this.name = name
