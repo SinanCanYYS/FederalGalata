@@ -1,18 +1,36 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { useAccountStore } from './stores/account'
+import { mapActions, mapState } from 'pinia'
+import { createApp } from 'vue'
+
+export default {
+  name: 'App',
+  computed: {
+    ...mapState(useAccountStore, ['user'])
+  },
+  async mounted() {
+    this.user = await this.fetchUser()
+  },
+  methods: {
+    ...mapActions(useAccountStore, ['fetchUser', 'logout']),
+    async doLogout() {
+      await this.logout()
+      this.$router.push('/')
+    }
+  }
+}
 </script>
 
 <template>
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
-
     <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/signup">Sign Up</RouterLink>
+        <a class="nav-link" @click="doLogout">Log out</a>
       </nav>
     </div>
   </header>
@@ -20,6 +38,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <Suspense>
     <RouterView />
   </Suspense>
+  <footer>logged in user {{ user?.name }}</footer>
 </template>
 
 <style scoped>

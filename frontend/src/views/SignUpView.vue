@@ -1,24 +1,21 @@
 <script>
-import axios from 'axios'
+import { useUserStore } from '@/stores/user'
+import { mapState, mapActions } from 'pinia'
 
 export default {
-  name: 'signUp',
+  name: 'SignUpView',
   data() {
     return {
-      name: '',
-      email: '',
-      age: 0,
-      password: ''
+      name: null,
+      age: null,
+      email: null,
+      password: null
     }
   },
   methods: {
+    ...mapActions(useUserStore, ['signUp']),
     async submitSignUp() {
-      await axios.post('http://localhost:3000/users', {
-        name: this.name,
-        age: this.age,
-        email: this.email,
-        password: this.password
-      })
+      await this.signUp(this.name, this.age, this.email, this.password)
     }
   }
 }
