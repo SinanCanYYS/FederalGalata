@@ -7,6 +7,10 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')
+
+const mongoose = require('mongoose')
 
 const indexRouter = require('./routes')
 const usersRouter = require('./routes/users')
@@ -23,6 +27,28 @@ app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
+
+const clientPromise = mongoose.connection.asPromise().then(connection => (connection = connection.getClient()))
+
+app.use(
+  session({
+    secret: 'waldIst7135!',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 * 15, // 15 days
+      // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+    },
+    store: MongoStore.create({ clientPromise: clientPromise, stringify: false }),
+    // store: MongoStore.create({ mongoUrl: process.env.MONGODB_CONNECTION_STRING }),
+  })
+)
+
+app.use((req, res, next) => {
+  console.log('Session: ', req.session)
+  next()
+})
 
 app.use(logger('dev'))
 app.use(express.json())
