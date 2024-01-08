@@ -16,6 +16,6 @@ export default {
 div
   h2 CounterFromStore
   p Count: {{ count }} - {{ doubleCount }}
-  button(@click="increment") Increment
-  button(@click="decrement") Decrement
+  button(@click.prevent="increment") Increment
+  button(@click.prevent="decrement") Decrement
 </template>

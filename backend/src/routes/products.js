@@ -16,6 +16,12 @@ router.get('/', async function (req, res, next) {
   // )
 })
 
+/* GET Product detail. */
+router.get('/:productId', async function (req, res, next) {
+  const product = await Product.findById(req.params.productId)
+  res.send(product)
+})
+
 /* Create a new product  . */
 router.post('/', async function (req, res, next) {
   const user = await User.findById(req.body.user)
