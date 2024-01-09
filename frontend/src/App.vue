@@ -6,11 +6,12 @@ import { createApp } from 'vue'
 
 export default {
   name: 'App',
+  components: {
+    RouterLink,
+    RouterView
+  },
   computed: {
     ...mapState(useAccountStore, ['user'])
-  },
-  async mounted() {
-    this.user = await this.fetchUser()
   },
   methods: {
     ...mapActions(useAccountStore, ['fetchUser', 'logout']),
@@ -18,6 +19,9 @@ export default {
       await this.logout()
       this.$router.push('/')
     }
+  },
+  async mounted() {
+    await this.fetchUser()
   }
 }
 </script>
@@ -28,9 +32,9 @@ export default {
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/signup">Sign Up</RouterLink>
-        <a class="nav-link" @click="doLogout">Log out</a>
+        <RouterLink v-if="!user" to="/login">Login</RouterLink>
+        <RouterLink v-if="!user" to="/signup">Sign Up</RouterLink>
+        <a class="nav-link" v-if="user" @click="doLogout">Log out</a>
       </nav>
     </div>
   </header>

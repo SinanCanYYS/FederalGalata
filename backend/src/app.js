@@ -34,6 +34,8 @@ passport.deserializeUser(User.deserializeUser())
 
 const app = express()
 
+app.set('trust proxy', 1)
+
 app.use(
   cors({
     origin: true,
@@ -54,12 +56,14 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 1000 * 60 * 60 * 24 * 15, // 15 days
-      // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
     },
     store: MongoStore.create({ clientPromise: clientPromise, stringify: false }),
     // store: MongoStore.create({ mongoUrl: process.env.MONGODB_CONNECTION_STRING }),
   })
 )
+
+app.use(passport.initialize())
 
 app.use(passport.session())
 
