@@ -4,6 +4,9 @@ import UsersView from '../views/UsersView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import LoginView from '../views/LoginView.vue'
 import ProductsView from '../views/ProductsView.vue'
+import RawMaterialsView from '../views/RawMaterialsView.vue'
+import MenuView from '../views/MenuView.vue'
+import { useAccountStore } from '@/stores/account'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +27,11 @@ const router = createRouter({
       component: SignUpView
     },
     {
+      path: '/menu',
+      name: 'menu',
+      component: MenuView
+    },
+    {
       path: '/users',
       name: 'users',
       component: UsersView
@@ -39,10 +47,20 @@ const router = createRouter({
       component: ProductsView
     },
     {
+      path: '/rawmaterials',
+      name: 'rawmaterials',
+      component: RawMaterialsView
+    },
+    {
       path: '/products/:id',
       name: 'product details',
       component: () => import('../views/ProductView.vue'),
       props: true
+    },
+    {
+      path: '/rawmaterials/:id',
+      name: 'rawmaterial details',
+      component: () => import('../views/RawMaterialView.vue')
     },
     {
       path: '/about',
@@ -53,6 +71,12 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
+})
+router.beforeEach(async (to) => {
+  const store = useAccountStore()
+  await store.fetchUser()
+
+  if (to.meta.requiresAuth && !store.user) return '/login'
 })
 
 export default router

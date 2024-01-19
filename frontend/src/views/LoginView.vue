@@ -14,6 +14,7 @@ export default {
     ...mapActions(useAccountStore, ['login']),
     async doLogin() {
       await this.login(this.email, this.password)
+      this.$router.push('/menu')
     }
   }
 }

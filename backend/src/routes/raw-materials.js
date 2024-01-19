@@ -9,6 +9,12 @@ router.get('/', async function (req, res, next) {
   res.send(rawMaterialList)
 })
 
+/* GET a RawMaterial details. */
+router.get('/:rawMaterialId', async function (req, res, next) {
+  const rawMaterial = await RawMaterial.findById(req.params.rawMaterialId)
+  res.send(rawMaterial)
+})
+
 /* Create a new raw material  . */
 router.post('/', async function (req, res, next) {
   const user = await User.findById(req.body.user)

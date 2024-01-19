@@ -16,6 +16,7 @@ export default {
     ...mapActions(useUserStore, ['signUp']),
     async submitSignUp() {
       await this.signUp(this.name, this.age, this.email, this.password)
+      this.$router.push('/')
     }
   }
 }
