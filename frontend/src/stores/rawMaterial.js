@@ -14,6 +14,16 @@ export const useRawMaterialStore = defineStore('rawMaterials', {
     },
     async fetchRawMaterial(rawMaterialId) {
       this.rawMaterial = (await axios.get(`/raw-materials/${rawMaterialId}`)).data
+    },
+    async addRawMaterial(name, category, subCategory, price, stockControl, unit) {
+      return await axios.post('/raw-materials', {
+        name,
+        category,
+        subCategory,
+        price,
+        stockControl,
+        unit
+      })
     }
   }
 })

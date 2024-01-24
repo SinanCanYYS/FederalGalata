@@ -3,9 +3,14 @@ import HomeView from '../views/HomeView.vue'
 import UsersView from '../views/UsersView.vue'
 import SignUpView from '../views/SignUpView.vue'
 import LoginView from '../views/LoginView.vue'
+import SuppliersView from '../views/SuppliersView.vue'
+import AddSupplierView from '../views/AddSupplierView.vue'
 import ProductsView from '../views/ProductsView.vue'
+import AddProductView from '../views/AddProductView.vue'
 import RawMaterialsView from '../views/RawMaterialsView.vue'
+import AddRawMaterialView from '../views/AddRawMaterialView.vue'
 import MenuView from '../views/MenuView.vue'
+import PurchasesView from '../views/PurchasesView.vue'
 import { useAccountStore } from '@/stores/account'
 
 const router = createRouter({
@@ -42,9 +47,24 @@ const router = createRouter({
       component: () => import('../views/UserView.vue')
     },
     {
+      path: '/suppliers',
+      name: 'suppliers',
+      component: SuppliersView
+    },
+    {
+      path: '/suppliers/newsupplier',
+      name: 'new supplier',
+      component: AddSupplierView
+    },
+    {
       path: '/products',
       name: 'products',
       component: ProductsView
+    },
+    {
+      path: '/products/newproduct',
+      name: 'new product',
+      component: AddProductView
     },
     {
       path: '/rawmaterials',
@@ -52,24 +72,55 @@ const router = createRouter({
       component: RawMaterialsView
     },
     {
-      path: '/products/:id',
-      name: 'product details',
-      component: () => import('../views/ProductView.vue'),
-      props: true
+      path: '/rawmaterials/newrawmaterial',
+      name: 'new rawMaterial',
+      component: AddRawMaterialView
     },
+    // {
+    //   path: '/products/:id',
+    //   name: 'product details',
+    //   component: () => import('../views/ProductView.vue'),
+    //   props: true
+    // },
+    // {
+    //   path: '/products/:productId/recipes/:recipeId',
+    //   name: 'recipe details',
+    //   component: () => import('../views/RecipeDetailView.vue'),
+    //   props: true
+    // },
     {
       path: '/rawmaterials/:id',
       name: 'rawmaterial details',
       component: () => import('../views/RawMaterialView.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/suppliers/:id',
+      name: 'supplier details',
+      component: () => import('../views/SupplierView.vue')
+    },
+    {
+      path: '/purchases',
+      name: 'purchases',
+      component: PurchasesView
+    },
+    {
+      path: '/purchases/:id',
+      name: 'purchase detail',
+      component: () => import('../views/PurchaseDetailView.vue')
+    },
+    {
+      path: '/purchases/newpurchase',
+      name: 'new purchase',
+      component: () => import('../views/NewPurchaseView.vue')
     }
+    // {
+    //   path: '/about',
+    //   name: 'about',
+    //   // route level code-splitting
+    //   // this generates a separate chunk (About.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () => import('../views/AboutView.vue')
+    // }
   ]
 })
 router.beforeEach(async (to) => {

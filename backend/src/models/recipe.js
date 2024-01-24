@@ -1,6 +1,7 @@
 const Product = require('./product')
 const Rawmaterial = require('./rawmaterial')
 const mongoose = require('mongoose')
+const autopopulate = require('mongoose-autopopulate')
 
 const recipeSchema = new mongoose.Schema({
   product: {
@@ -12,6 +13,9 @@ const recipeSchema = new mongoose.Schema({
       rawMaterial: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Rawmaterial',
+        autopopulate: {
+          maxDepth: 1,
+        },
       },
       quantity: Number,
     },
@@ -40,6 +44,7 @@ class Recipe {
 }
 
 recipeSchema.loadClass(Recipe)
+recipeSchema.plugin(autopopulate)
 module.exports = mongoose.model('Recipe', recipeSchema)
 
 // module.exports = Recipe

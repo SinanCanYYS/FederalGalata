@@ -5,8 +5,9 @@ const purchaseSchema = new mongoose.Schema(
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Supplier',
+      // autopopulate: true
     },
-    date: String,
+    date: Date,
     period: String,
     purchaseItems: [
       {
@@ -37,8 +38,9 @@ const purchaseSchema = new mongoose.Schema(
 
 purchaseSchema.pre('save', function (next) {
   // Compute and set the 'period' before saving
-  const dateParts = this.date.split('.')
-  this.period = `${dateParts[1]}.${dateParts[2].substring(2, 4)}`
+  // const dateParts = this.date.split('.') //previously used to convert string date
+  const dateParts = this.date.toISOString().split('T')[0].split('-')
+  this.period = `${dateParts[1]}.${dateParts[0].substring(2, 4)}`
   next()
 })
 

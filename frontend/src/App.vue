@@ -30,23 +30,87 @@ export default {
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink v-if="!user" to="/login">Login</RouterLink>
-        <RouterLink v-if="!user" to="/signup">Sign Up</RouterLink>
-        <a class="nav-link" v-if="user" @click="doLogout">Log out</a>
+        <div>
+          <RouterLink to="/menu">Menu</RouterLink>
+        </div>
+        <div class="menu">
+          <RouterLink to="/products">Products</RouterLink>
+          <RouterLink to="/rawmaterials">Raw Materials</RouterLink>
+          <RouterLink to="/purchases">Purchase</RouterLink>
+          <RouterLink to="/suppliers">Supplier</RouterLink>
+        </div>
+        <div class="log">
+          <RouterLink v-if="!user" to="/">Login</RouterLink>
+          <RouterLink v-if="!user" to="/signup">Sign Up</RouterLink>
+          <a v-if="user" @click="doLogout">Log out</a>
+        </div>
       </nav>
     </div>
   </header>
-
-  <Suspense>
-    <RouterView />
-  </Suspense>
+  <main>
+    <Suspense>
+      <RouterView />
+    </Suspense>
+  </main>
   <footer>logged in user {{ user?.name }}</footer>
 </template>
 
 <style scoped>
-header {
+/* .wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+} */
+
+main {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  background-color: beige;
+}
+
+footer {
+  position: sticky;
+  background-color: blanchedalmond;
+  margin-top: auto;
+}
+nav {
+  width: 100%;
+  font-size: 1em;
+  /* text-align: center; */
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav a {
+  text-decoration: underline;
+  color: blue;
+}
+
+@media (max-width: 700px) {
+  nav,
+  .menu {
+    flex-direction: column;
+    align-items: center;
+    margin: 30px;
+  }
+}
+.menu {
+  border: 1px solid;
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.log {
+  width: 20%;
+  border: 1px solid;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -106,5 +170,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>

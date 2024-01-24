@@ -1,4 +1,13 @@
-@import './base.css';
+#app {
+  margin: 0 auto;
+  padding: 2 rem;
+  font-weight: normal;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* @import './base.css';
 
 #app {
   max-width: 1280px;
@@ -32,4 +41,4 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */

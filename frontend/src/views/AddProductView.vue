@@ -1,30 +1,30 @@
 <script>
-import { useUserStore } from '@/stores/user'
 import { mapState, mapActions } from 'pinia'
+import { useProductStore } from '@/stores/product'
 
 export default {
-  name: 'SignUpView',
+  name: 'AddProductView',
   data() {
     return {
       name: null,
-      age: null,
-      email: null,
-      password: null
+      category: null,
+      subCategory: null,
+      price: null
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signUp']),
-    async submitSignUp() {
-      await this.signUp(this.name, this.age, this.email, this.password)
-      this.$router.push('/')
+    ...mapActions(useProductStore, ['addProduct']),
+    async addItem() {
+      await this.addProduct(this.name, this.category, this.subCategory, this.price)
+      this.$router.push('/products')
     }
   }
 }
 </script>
 <template>
-  <div class="signupForm">
-    <h2>Sign Up Page</h2>
-    <form @submit.prevent="submitSignUp">
+  <div class="productForm">
+    <h2>Add a new Product</h2>
+    <form @submit.prevent="addItem">
       <table>
         <tbody>
           <tr class="line">
@@ -37,37 +37,37 @@ export default {
           </tr>
           <tr class="line">
             <td>
-              <label for="age">Age</label>
+              <label for="category">Category</label>
             </td>
             <td>
-              <input id="age" type="number" v-model="age" />
-            </td>
-          </tr>
-          <tr class="line">
-            <td>
-              <label for="email">E-mail</label>
-            </td>
-            <td>
-              <input id="email" type="text" v-model="email" />
+              <input id="category" type="text" v-model="category" />
             </td>
           </tr>
           <tr class="line">
             <td>
-              <label for="password">Password</label>
+              <label for="subCategory">Subcategory</label>
             </td>
             <td>
-              <input id="password" type="password" v-model="password" />
+              <input id="subCategory" type="text" v-model="subCategory" />
+            </td>
+          </tr>
+          <tr class="line">
+            <td>
+              <label for="price">Price</label>
+            </td>
+            <td>
+              <input id="price" type="number" v-model="price" />
             </td>
           </tr>
         </tbody>
       </table>
-      <button type="submit">Sign Up</button>
+      <button type="submit">Add Product</button>
     </form>
   </div>
 </template>
 
 <style scoped>
-.signupForm {
+.productForm {
   display: flex;
   flex-direction: column;
   justify-content: center;

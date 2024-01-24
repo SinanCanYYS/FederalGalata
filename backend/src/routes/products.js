@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Product = require('../models/product')
 const User = require('../models/user')
+const Recipe = require('../models/recipe')
 
 /* GET Product list. */
 router.get('/', async function (req, res, next) {
@@ -24,9 +25,9 @@ router.get('/:productId', async function (req, res, next) {
 
 /* Create a new product  . */
 router.post('/', async function (req, res, next) {
-  const user = await User.findById(req.body.user)
+  // const user = await User.findById(req.body.user)
   // const user = User.list.find(user => user.name === req.body.user.name)
-  const newProduct = await user.createProduct({
+  const newProduct = await req.user.createProduct({
     name: req.body.name,
     category: req.body.category,
     subCategory: req.body.subCategory,
@@ -47,6 +48,14 @@ router.post('/:productID/recipes', async function (req, res, next) {
 router.get('/:productID/recipes', async function (req, res, next) {
   const product = await Product.findById(req.params.productID)
   res.send(product.recipes)
+})
+
+// get single recipe details
+router.get('/:productID/recipes/:recipeId', async function (req, res, next) {
+  // const product = await Product.findById(req.params.productID)
+  const recipe = await Recipe.findById(req.params.recipeId)
+
+  res.send(recipe)
 })
 
 module.exports = router

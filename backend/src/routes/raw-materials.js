@@ -17,8 +17,8 @@ router.get('/:rawMaterialId', async function (req, res, next) {
 
 /* Create a new raw material  . */
 router.post('/', async function (req, res, next) {
-  const user = await User.findById(req.body.user)
-  const newRawMaterial = await user.createRawmaterial({
+  // const user = await User.findById(req.body.user)
+  const newRawMaterial = await req.user.createRawmaterial({
     name: req.body.name,
     category: req.body.category,
     subCategory: req.body.subCategory,

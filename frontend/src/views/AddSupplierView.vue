@@ -1,33 +1,33 @@
 <script>
-import { useUserStore } from '@/stores/user'
-import { mapState, mapActions } from 'pinia'
+import { mapActions } from 'pinia'
+import { useSupplierStore } from '@/stores/supplier'
 
 export default {
-  name: 'SignUpView',
+  name: 'AddSupplierView',
   data() {
     return {
       name: null,
-      age: null,
-      email: null,
-      password: null
+      contact: null,
+      email: null
     }
   },
   methods: {
-    ...mapActions(useUserStore, ['signUp']),
-    async submitSignUp() {
-      await this.signUp(this.name, this.age, this.email, this.password)
-      this.$router.push('/')
+    ...mapActions(useSupplierStore, ['addNewSupplier']),
+    async addSupplier() {
+      await this.addNewSupplier(this.name, this.contact, this.email)
+      this.$router.push('/suppliers')
     }
   }
 }
 </script>
+
 <template>
-  <div class="signupForm">
-    <h2>Sign Up Page</h2>
-    <form @submit.prevent="submitSignUp">
+  <div class="supplierForm">
+    <h2>Add New Supplier</h2>
+    <form @submit.prevent="addSupplier">
       <table>
         <tbody>
-          <tr class="line">
+          <tr>
             <td>
               <label for="name">Name</label>
             </td>
@@ -35,15 +35,15 @@ export default {
               <input id="name" type="text" v-model="name" />
             </td>
           </tr>
-          <tr class="line">
+          <tr>
             <td>
-              <label for="age">Age</label>
+              <label for="contact">Conatct</label>
             </td>
             <td>
-              <input id="age" type="number" v-model="age" />
+              <input id="contact" type="text" v-model="contact" />
             </td>
           </tr>
-          <tr class="line">
+          <tr>
             <td>
               <label for="email">E-mail</label>
             </td>
@@ -51,23 +51,15 @@ export default {
               <input id="email" type="text" v-model="email" />
             </td>
           </tr>
-          <tr class="line">
-            <td>
-              <label for="password">Password</label>
-            </td>
-            <td>
-              <input id="password" type="password" v-model="password" />
-            </td>
-          </tr>
         </tbody>
       </table>
-      <button type="submit">Sign Up</button>
+      <button type="submit">Add Supplier</button>
     </form>
   </div>
 </template>
 
 <style scoped>
-.signupForm {
+.supplierForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -77,12 +69,11 @@ export default {
 form {
   background-color: rgb(202, 202, 160);
   display: flex;
-  flex: 0.5;
   flex-direction: column;
+  flex: 0.5;
   align-items: center;
   justify-content: space-evenly;
 }
-
 button {
   width: 50%;
 }
