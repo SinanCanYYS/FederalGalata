@@ -28,9 +28,6 @@ export default {
 <template>
   <div v-if="isLoading">Loading...</div>
   <div v-if="!isLoading">
-    <h2>Recipe Detail</h2>
-    <h3>Name: {{ recipe._id }}</h3>
-
     <h3>Ingredients</h3>
     <ul>
       <li v-for="ingredient in recipe.ingredients" :key="ingredient._id">

@@ -27,7 +27,8 @@ class User {
   // }
   async createRecipe({ product, ingredients }) {
     const recipe = await Recipe.create({ product, ingredients })
-    product.recipes.push(recipe)
+    // product.recipes.push(recipe)
+    product.recipes = recipe
     await product.save()
     return recipe
   }

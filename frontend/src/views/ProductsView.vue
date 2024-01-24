@@ -60,7 +60,6 @@ export default {
           :recipeId="selectedRecipeId"
           v-if="selectedRecipeId"
         />
-        RecipeView
       </div>
     </div>
   </div>

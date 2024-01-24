@@ -7,13 +7,19 @@ const productSchema = new mongoose.Schema({
   category: String,
   subCategory: String,
   price: Number,
-  recipes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Recipe',
-      autopopulate: { maxDepth: 2 },
-    },
-  ],
+  recipes: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Recipe',
+    autopopulate: { maxDepth: 2 },
+  },
+
+  // recipes: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Recipe',
+  //     autopopulate: { maxDepth: 2 },
+  //   },
+  // ],
 })
 class Product {
   // constructor(name, category, subCategory, price) {

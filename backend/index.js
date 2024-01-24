@@ -179,21 +179,21 @@ async function main() {
   const purchase2 = await axios.post('/purchases', {
     user: sinan._id,
     supplier: fcc._id,
-    date: '01.02.2023',
+    date: new Date(2023, 2, 1),
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 5, price: 300 }],
   })
 
   const purchase3 = await axios.post('/purchases', {
     user: sinan._id,
     supplier: fcc._id,
-    date: '01.02.2023',
+    date: new Date(2023, 2, 1),
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 15, price: 300 }],
   })
 
   const purchase4 = await axios.post('/purchases', {
     user: sinan._id,
     supplier: fcc._id,
-    date: '01.02.2023',
+    date: new Date(2023, 2, 1),
     purchaseItems: [
       { rawMaterial: coffeeBean, quantity: 8, price: 300 },
       { rawMaterial: milk, quantity: 60, price: 30 },
@@ -204,7 +204,7 @@ async function main() {
   const purchase5 = await axios.post('/purchases', {
     user: sinan._id,
     supplier: fcc._id,
-    date: '01.01.2023',
+    date: new Date(2023, 1, 1),
     purchaseItems: [
       { rawMaterial: coffeeBean, quantity: 1, price: 300 },
       { rawMaterial: milk, quantity: 1, price: 30 },
@@ -215,7 +215,7 @@ async function main() {
   const purchase6 = await axios.post('/purchases', {
     user: sinan._id,
     supplier: fcc._id,
-    date: '01.05.2023',
+    date: new Date(2023, 5, 1),
     purchaseItems: [{ rawMaterial: coffeeBean, quantity: 88, price: 400 }],
   })
 
