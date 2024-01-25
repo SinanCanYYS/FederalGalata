@@ -21,6 +21,7 @@ const rawMaterialsRouter = require('./routes/raw-materials')
 const purchasesRouter = require('./routes/purchases')
 const stocksRouter = require('./routes/stocks')
 const salesRouter = require('./routes/sales')
+const categoryRouter = require('./routes/category')
 
 const User = require('./models/user')
 const passport = require('passport')
@@ -87,6 +88,7 @@ app.use('/raw-materials', rawMaterialsRouter)
 app.use('/purchases', purchasesRouter)
 app.use('/stocks', stocksRouter)
 app.use('/sales', salesRouter)
+app.use('/category', categoryRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

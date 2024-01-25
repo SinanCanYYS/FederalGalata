@@ -6,11 +6,13 @@ import LoginView from '../views/LoginView.vue'
 import SuppliersView from '../views/SuppliersView.vue'
 import AddSupplierView from '../views/AddSupplierView.vue'
 import ProductsView from '../views/ProductsView.vue'
+import AddRecipeView from '../views/AddRecipeView.vue'
 import AddProductView from '../views/AddProductView.vue'
 import RawMaterialsView from '../views/RawMaterialsView.vue'
 import AddRawMaterialView from '../views/AddRawMaterialView.vue'
 import MenuView from '../views/MenuView.vue'
 import PurchasesView from '../views/PurchasesView.vue'
+import SettingsView from '../views/SettingsView.vue'
 import { useAccountStore } from '@/stores/account'
 
 const router = createRouter({
@@ -67,6 +69,11 @@ const router = createRouter({
       component: AddProductView
     },
     {
+      path: '/products/:id/recipe',
+      name: 'addRecipe',
+      component: AddRecipeView
+    },
+    {
       path: '/rawmaterials',
       name: 'rawmaterials',
       component: RawMaterialsView
@@ -112,6 +119,11 @@ const router = createRouter({
       path: '/purchases/newpurchase',
       name: 'new purchase',
       component: () => import('../views/NewPurchaseView.vue')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: SettingsView
     }
     // {
     //   path: '/about',

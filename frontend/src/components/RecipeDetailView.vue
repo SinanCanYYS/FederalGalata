@@ -26,6 +26,7 @@ export default {
 }
 </script>
 <template>
+  <button>Add New Recipe</button>
   <div v-if="isLoading">Loading...</div>
   <div v-if="!isLoading">
     <h3>Ingredients</h3>

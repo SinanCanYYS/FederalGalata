@@ -38,6 +38,7 @@ export default {
           <RouterLink to="/rawmaterials">Raw Materials</RouterLink>
           <RouterLink to="/purchases">Purchase</RouterLink>
           <RouterLink to="/suppliers">Supplier</RouterLink>
+          <RouterLink to="/settings">Settings</RouterLink>
         </div>
         <div class="log">
           <RouterLink v-if="!user" to="/">Login</RouterLink>

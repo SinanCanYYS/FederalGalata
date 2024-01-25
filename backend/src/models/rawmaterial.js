@@ -1,9 +1,17 @@
 const mongoose = require('mongoose')
+// const Category = require('./category')
+// const SubCategory = require('./subcategory')
 
 const rawmaterialSchema = new mongoose.Schema({
   name: String,
-  category: String,
-  subCategory: String,
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+  },
+  subCategory: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SubCategory',
+  },
   price: Number,
   stockControl: Boolean,
   unit: String,
