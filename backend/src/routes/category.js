@@ -22,7 +22,7 @@ router.get('/', async function (req, res, next) {
 
 /* GET SubCategory List */
 router.get('/:categoryID/subcategory', async function (req, res, next) {
-  const subCategoryList = await SubCategory.find()
+  const subCategoryList = await SubCategory.find({ category: req.params.categoryID })
   res.send(subCategoryList)
 })
 

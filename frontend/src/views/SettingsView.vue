@@ -10,7 +10,9 @@ export default {
     SubCategory
   },
   data() {
-    return {}
+    return {
+      selecterCategoryId: null
+    }
   },
   methods: {},
   async created() {}
@@ -24,9 +26,9 @@ export default {
     <div class="category">
       <Category />
     </div>
-    <div class="category">
-      <SubCategory />
-    </div>
+    <!-- <div class="category">
+      <SubCategory :categoryId="selectedCategoryId" v-if="selectedCategoryId" />
+    </div> -->
   </div>
 </template>
 <style scoped>

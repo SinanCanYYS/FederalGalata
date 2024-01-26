@@ -1,14 +1,19 @@
 <script>
 import { mapState, mapActions } from 'pinia'
 import { useCategoryStore } from '@/stores/category'
+import SubCategory from '@/components/SubCategory.vue'
 
 export default {
   name: 'categoryView',
+  components: {
+    SubCategory
+  },
   data() {
     return {
       catType: null,
       // categoryList: [],
-      subCategoryList: [],
+      // subCategoryList: [],
+      selectedCategoryId: '',
       newCategoryName: '',
       newCategoryType: '',
       isCreateCategoryModalOpen: false
@@ -30,6 +35,10 @@ export default {
       // Clear form fields if needed
       this.newCategoryName = ''
     },
+    selectCategory(categoryId) {
+      // Set selectedCategoryId when a category is clicked
+      this.selectedCategoryId = categoryId
+    },
     async addNewCategory() {
       // Call the action to create a new category
       await this.createCategory(this.newCategoryName, this.newCategoryType)
@@ -44,20 +53,22 @@ export default {
   <div class="category">
     <button @click="openCreateCategoryModal">Add New Category</button>
     <!-- Modal for creating a new category -->
-    <div v-if="isCreateCategoryModalOpen" class="modal">
-      <form @submit.prevent="addNewCategory">
-        <label for="newCategoryName">Category Name:</label>
-        <input type="text" id="newCategoryName" v-model="newCategoryName" required />
+    <div v-if="isCreateCategoryModalOpen" class="overlay">
+      <div class="dialog">
+        <form @submit.prevent="addNewCategory">
+          <label for="newCategoryName">Category Name:</label>
+          <input type="text" id="newCategoryName" v-model="newCategoryName" required />
 
-        <label for="newCategoryType">Category Type:</label>
-        <select id="newCategoryType" v-model="newCategoryType" required>
-          <option value="product">Product</option>
-          <option value="rawMaterial">Raw Material</option>
-        </select>
+          <label for="newCategoryType">Category Type:</label>
+          <select id="newCategoryType" v-model="newCategoryType" required>
+            <option value="product">Product</option>
+            <option value="rawMaterial">Raw Material</option>
+          </select>
 
-        <button type="submit">Create Category</button>
-        <button type="button" @click="closeCreateCategoryModal">Cancel</button>
-      </form>
+          <button type="submit">Create Category</button>
+          <button type="button" @click="closeCreateCategoryModal">Cancel</button>
+        </form>
+      </div>
     </div>
     <div>
       <h2>Category List</h2>
@@ -70,9 +81,18 @@ export default {
     <div class="list">
       <ul v-if="catType && categoryList && categoryList.length > 0">
         <!-- Display the fetched categoryList items -->
-        <li v-for="category in categoryList" :key="category._id">{{ category.name }}</li>
+        <li
+          v-for="category in categoryList"
+          :key="category._id"
+          @click="selectCategory(category._id)"
+        >
+          {{ category.name }}
+        </li>
       </ul>
     </div>
+  </div>
+  <div class="subCategory">
+    <SubCategory :categoryId="selectedCategoryId" v-if="selectedCategoryId" />
   </div>
 </template>
 <style scoped>
@@ -81,7 +101,32 @@ export default {
   flex-direction: column;
 }
 
-.list {
-  background-color: aqua;
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  z-index: 1000;
+  border: 1px solid #ccc;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
 }
 </style>
