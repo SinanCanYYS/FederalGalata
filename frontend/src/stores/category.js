@@ -24,6 +24,11 @@ export const useCategoryStore = defineStore('category', {
         name,
         type
       })
+    },
+    async createSubCategory(name, categoryId) {
+      return await axios.post(`/category/${categoryId}/subcategory`, {
+        name
+      })
     }
   }
 })

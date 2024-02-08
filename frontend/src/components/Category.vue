@@ -56,17 +56,21 @@ export default {
     <div v-if="isCreateCategoryModalOpen" class="overlay">
       <div class="dialog">
         <form @submit.prevent="addNewCategory">
-          <label for="newCategoryName">Category Name:</label>
-          <input type="text" id="newCategoryName" v-model="newCategoryName" required />
-
-          <label for="newCategoryType">Category Type:</label>
-          <select id="newCategoryType" v-model="newCategoryType" required>
-            <option value="product">Product</option>
-            <option value="rawMaterial">Raw Material</option>
-          </select>
-
-          <button type="submit">Create Category</button>
-          <button type="button" @click="closeCreateCategoryModal">Cancel</button>
+          <div style="margin: 10px">
+            <label for="newCategoryName">Category Name:</label>
+            <input type="text" id="newCategoryName" v-model="newCategoryName" required />
+          </div>
+          <div style="margin: 10px">
+            <label for="newCategoryType">Category Type:</label>
+            <select id="newCategoryType" v-model="newCategoryType" required>
+              <option value="product">Product</option>
+              <option value="rawMaterial">Raw Material</option>
+            </select>
+          </div>
+          <div>
+            <button type="submit" class="btn">Create</button>
+            <button type="button" class="btn" @click="closeCreateCategoryModal">Cancel</button>
+          </div>
         </form>
       </div>
     </div>
@@ -101,7 +105,7 @@ export default {
   flex-direction: column;
 }
 
-.modal {
+/* .modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -110,7 +114,7 @@ export default {
   padding: 20px;
   z-index: 1000;
   border: 1px solid #ccc;
-}
+} */
 
 .overlay {
   position: fixed;
@@ -125,8 +129,19 @@ export default {
 }
 
 .dialog {
+  height: 20%;
   background: white;
   padding: 20px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  width: 40%;
+  height: 30px;
+  margin: 10px;
 }
 </style>

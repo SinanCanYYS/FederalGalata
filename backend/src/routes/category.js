@@ -11,7 +11,7 @@ router.post('/', async function (req, res, next) {
 
 /* Create a SubCategory */
 router.post('/:categoryId/subcategory', async function (req, res, next) {
-  const newSubCategory = await SubCategory.create({ name: req.body.name, category: req.body.category })
+  const newSubCategory = await SubCategory.create({ name: req.body.name, category: req.params.categoryId })
   res.send(newSubCategory)
 })
 /* GET Category List */
